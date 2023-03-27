@@ -1,0 +1,36 @@
+- a semaphore initialized to 4 for the 4 waiting chairs
+- a semaphore initialized to 2 for the 2 service chairs
+- 12 threads for 12 customers
+- 2 threads for 2 assistants
+
+should init the assistant threads first, as they will serve the customers 
+as they come in.
+
+# customersWaiting semaphore
+- initialize customersWaiting to 0 (condition variable)
+- assistants sem_wait on customersWaiting, if it's 0 there's no customers,
+  they sleep, if it's > 0 then they are woken up, begin servicing the customer,
+  and decrement customersWaiting.
+- new customers sem_post (increment) customersWaiting on arrival. wakes any 
+  sleeping assistants. if this semaphore == 4 when a new customer arrives, 
+  that customer leaves. 
+
+# availableAssts semaphore
+- initialize availableAssts to 2 (resources variable)
+- customer threads sem_wait on availableAssts, if it's 0 there's no assts,
+  they sleep, if it's > 0 then they are woken up, serviced, and decrement 
+  availableAssts.
+- sem_post (increment) availableAssts when a customer leaves. wakes any 
+  sleeping customers, and a waiting customer is serviced.
+
+
+
+From handout:
+
+You could use usleep for the interarrival time between different threads 
+and assistants’ sleep. 
+** usleep puts the calling thread to sleep for specified microseconds **
+
+You could use the Spin function to simulate the service time. 
+** Spin blocks the calling thread for specified seconds, 
+but doesn't put it to sleep **
