@@ -23,7 +23,7 @@ void Spin(int howlong) {
 void threadfunc() {
     while (1) {
         sem_wait(&semaphore);
-        printf("Hello from da thread!\n");
+        printf("Hello from the thread!\n");
         sem_post(&semaphore);
         Spin(5);
     }
