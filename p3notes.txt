@@ -12,18 +12,20 @@ as they come in.
   they sleep, if it's > 0 then they are woken up, begin servicing the customer,
   and decrement customersWaiting.
 - new customers sem_post (increment) customersWaiting on arrival. wakes any 
-  sleeping assistants. if this semaphore == 4 when a new customer arrives, 
+  sleeping assistants. if this semaphore >= 4 when a new customer arrives, 
   that customer leaves. 
 
 # availableAssts semaphore
 - initialize availableAssts to 2 (resources variable)
-- customer threads sem_wait on availableAssts, if it's 0 there's no assts,
+- new customers sem_wait on availableAssts, if it's 0 there's no assts,
   they sleep, if it's > 0 then they are woken up, serviced, and decrement 
   availableAssts.
 - sem_post (increment) availableAssts when a customer leaves. wakes any 
   sleeping customers, and a waiting customer is serviced.
 
-
+- need to create a shared queue, of which the customers enqueue themselves
+  and the assts dequeue to service 
+- for this I'll need a mutex lock 
 
 From handout:
 
@@ -34,3 +36,8 @@ and assistants’ sleep.
 You could use the Spin function to simulate the service time. 
 ** Spin blocks the calling thread for specified seconds, 
 but doesn't put it to sleep **
+
+
+- create assistant threads
+- asst threads loop infinitely, listening/waiting for new customer threads
+- 
